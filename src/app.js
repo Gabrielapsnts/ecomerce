@@ -23,3 +23,6 @@ app.use('/', authRoutes);
 app.listen(3000, () => {
   console.log('Servidor rodando em http://localhost:3000');
 });
+
+import productsRoutes from './routes/productsRoutes.js';
+app.use('/', productsRoutes);

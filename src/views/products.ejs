@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Produtos</title>
+  <style>
+    .product-list { display: flex; flex-wrap: wrap; gap: 20px; }
+    .product-card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; width: 200px; text-align: center; }
+    .product-card img { width: 120px; height: 120px; object-fit: cover; }
+    .filter-form { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <% if (welcome) { %>
+    <div style="background:#dff0d8;color:#3c763d;padding:10px 0 10px 0;text-align:center;font-weight:bold;">Bem-vindo, <%= welcome %>!</div>
+  <% } %>
+  <h1>Produtos</h1>
+  <form class="filter-form" method="get" action="/products">
+    <label>Filtrar por categoria:</label>
+    <select name="category" onchange="this.form.submit()">
+      <option value="">Todas</option>
+      <% categories.forEach(cat => { %>
+        <option value="<%= cat %>" <%= selectedCategory === cat ? 'selected' : '' %>><%= cat %></option>
+      <% }) %>
+    </select>
+  </form>
+  <div class="product-list">
+    <% products.forEach(product => { %>
+      <div class="product-card">
+        <img src="<%= product.image %>" alt="<%= product.name %>">
+        <h3><%= product.name %></h3>
+        <p>R$ <%= product.price.toFixed(2) %></p>
+        <form method="post" action="/cart/add">
+          <input type="hidden" name="productId" value="<%= product.id %>">
+          <button type="submit">Adicionar ao carrinho</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>
