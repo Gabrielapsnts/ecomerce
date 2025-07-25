@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pedido #<%= pedido.id %>
+    </title>
+    <style>
+        .pedido-details {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="/products">Produtos</a>
+        <a href="/pedidos">Pedidos</a>
+    </div>
+
+    <h1>Detalhes do Pedido #<%= pedido.id %>
+    </h1>
+
+    <div class="pedido-details">
+        <p><strong>Quantidade de itens:</strong>
+            <%= pedido.quantidade_itens %>
+        </p>
+
+        <h3>Itens do pedido:</h3>
+        <% pedido.lista_itens.forEach(item=> { %>
+            <div class="item">
+                <strong>
+                    <%= item.nome %>
+                </strong><br>
+                Quantidade: <%= item.quantidade %><br>
+                    Preço unitário: R$ <%= item.preco.toFixed(2) %><br>
+                        Subtotal: R$ <%= (item.quantidade * item.preco).toFixed(2) %>
+            </div>
+            <% }) %>
+
+                <div class="total">
+                    Total do pedido: R$ <%= pedido.preco_total.toFixed(2) %>
+                </div>
+    </div>
+</body>
+
+</html>

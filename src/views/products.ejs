@@ -1,40 +1,77 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Produtos</title>
   <style>
-    .product-list { display: flex; flex-wrap: wrap; gap: 20px; }
-    .product-card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; width: 200px; text-align: center; }
-    .product-card img { width: 120px; height: 120px; object-fit: cover; }
-    .filter-form { margin-bottom: 20px; }
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .product-card {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 16px;
+      width: 200px;
+      text-align: center;
+    }
+
+    .product-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .nav {
+      margin-bottom: 20px;
+    }
+
+    .nav a {
+      margin-right: 15px;
+      text-decoration: none;
+      color: #007bff;
+    }
   </style>
 </head>
+
 <body>
   <% if (welcome) { %>
-    <div style="background:#dff0d8;color:#3c763d;padding:10px 0 10px 0;text-align:center;font-weight:bold;">Bem-vindo, <%= welcome %>!</div>
-  <% } %>
-  <h1>Produtos</h1>
-  <form class="filter-form" method="get" action="/products">
-    <label>Filtrar por categoria:</label>
-    <select name="category" onchange="this.form.submit()">
-      <option value="">Todas</option>
-      <% categories.forEach(cat => { %>
-        <option value="<%= cat %>" <%= selectedCategory === cat ? 'selected' : '' %>><%= cat %></option>
-      <% }) %>
-    </select>
-  </form>
-  <div class="product-list">
-    <% products.forEach(product => { %>
-      <div class="product-card">
-        <img src="<%= product.image %>" alt="<%= product.name %>">
-        <h3><%= product.name %></h3>
-        <p>R$ <%= product.price.toFixed(2) %></p>
-        <form method="post" action="/cart/add">
-          <input type="hidden" name="productId" value="<%= product.id %>">
-          <button type="submit">Adicionar ao carrinho</button>
-        </form>
+    <div style="background:#dff0d8;color:#3c763d;padding:10px 0 10px 0;text-align:center;font-weight:bold;">Bem-vindo,
+      <%= welcome %>!
+    </div>
+    <% } %>
+
+      <div class="nav">
+        <a href="/products">Produtos</a>
+        <a href="/pedidos">Pedidos</a>
       </div>
-    <% }) %>
-  </div>
+
+      <h1>Produtos</h1>
+
+      <div class="product-list">
+        <% products.forEach(product=> { %>
+          <div class="product-card">
+            <% if (product.image) { %>
+              <img src="<%= product.image %>" alt="<%= product.nome %>">
+              <% } %>
+                <h3>
+                  <%= product.nome %>
+                </h3>
+                <p>R$ <%= product.preco.toFixed(2) %>
+                </p>
+                <form method="post" action="/pedidos">
+                  <input type="hidden" name="produto_id" value="<%= product.id %>">
+                  <input type="hidden" name="produto_nome" value="<%= product.nome %>">
+                  <input type="hidden" name="produto_preco" value="<%= product.preco %>">
+                  <label>Quantidade:</label>
+                  <input type="number" name="quantidade" value="1" min="1" required>
+                  <button type="submit">Fazer Pedido</button>
+                </form>
+          </div>
+          <% }) %>
+      </div>
 </body>
+
 </html>

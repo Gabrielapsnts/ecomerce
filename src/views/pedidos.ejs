@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pedidos</title>
+    <style>
+        .pedido-list {
+            margin-top: 20px;
+        }
+
+        .pedido-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .item {
+            margin: 5px 0;
+            padding: 5px;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="/products">Produtos</a>
+        <a href="/pedidos">Pedidos</a>
+    </div>
+
+    <h1>Pedidos</h1>
+
+    <div class="pedido-list">
+        <% if (pedidos.length===0) { %>
+            <p>Nenhum pedido encontrado.</p>
+            <% } else { %>
+                <% pedidos.forEach(pedido=> { %>
+                    <div class="pedido-card">
+                        <h3>Pedido #<%= pedido.id %>
+                        </h3>
+                        <p><strong>Quantidade de itens:</strong>
+                            <%= pedido.quantidade_itens %>
+                        </p>
+                        <p><strong>Preço total:</strong> R$ <%= pedido.preco_total.toFixed(2) %>
+                        </p>
+                        <div>
+                            <strong>Itens:</strong>
+                            <% pedido.lista_itens.forEach(item=> { %>
+                                <div class="item">
+                                    <%= item.nome %> - Qtd: <%= item.quantidade %> - R$ <%= item.preco.toFixed(2) %>
+                                </div>
+                                <% }) %>
+                        </div>
+                        <a href="/pedidos/<%= pedido.id %>">Ver detalhes</a>
+                    </div>
+                    <% }) %>
+                        <% } %>
+    </div>
+</body>
+
+</html>
