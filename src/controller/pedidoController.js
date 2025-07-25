@@ -24,7 +24,11 @@ const pedidoController = {
             const quantidade_itens = parseInt(quantidade);
             const preco_total = parseFloat(produto_preco) * parseInt(quantidade);
 
-            await Pedido.create(quantidade_itens, lista_itens, preco_total);
+            // TODO: Implementar sistema de sessão para pegar o user_id real
+            // Por enquanto usando user_id = 1 como exemplo
+            const user_id = 1;
+
+            await Pedido.create(user_id, quantidade_itens, lista_itens, preco_total);
             res.redirect('/pedidos');
         } catch (err) {
             res.status(500).send('Erro ao criar pedido');

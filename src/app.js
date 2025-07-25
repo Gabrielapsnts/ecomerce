@@ -4,6 +4,7 @@ import path from 'path';
 import authRoutes from './routes/authRoutes.js';
 import productsRoutes from './routes/productsRoutes.js';
 import pedidoRoutes from './routes/pedidoRoutes.js';
+import carrinhoRoutes from './routes/carrinhoRoutes.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', authRoutes);
 app.use('/', productsRoutes);
 app.use('/', pedidoRoutes);
+app.use('/', carrinhoRoutes);
 
 app.listen(3000, () => {
   console.log('Servidor rodando em http://localhost:3000');

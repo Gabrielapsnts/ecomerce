@@ -33,6 +33,20 @@
       text-decoration: none;
       color: #007bff;
     }
+
+    .filter-form {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .filter-form select {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
   </style>
 </head>
 
@@ -46,9 +60,24 @@
       <div class="nav">
         <a href="/products">Produtos</a>
         <a href="/pedidos">Pedidos</a>
+        <a href="/carrinho">Carrinho</a>
       </div>
 
       <h1>Produtos</h1>
+
+      <form class="filter-form" method="get" action="/products">
+        <label>Filtrar por categoria:</label>
+        <select name="category" onchange="this.form.submit()">
+          <option value="">Todas as categorias</option>
+          <% categories.forEach(cat=> { %>
+            <option value="<%= cat %>" <%=selectedCategory===cat ? 'selected' : '' %>><%= cat %>
+            </option>
+            <% }) %>
+        </select>
+        <% if (welcome) { %>
+          <input type="hidden" name="welcome" value="<%= welcome %>">
+          <% } %>
+      </form>
 
       <div class="product-list">
         <% products.forEach(product=> { %>
@@ -61,13 +90,30 @@
                 </h3>
                 <p>R$ <%= product.preco.toFixed(2) %>
                 </p>
+
+                <!-- Adicionar ao carrinho -->
+                <form method="post" action="/carrinho/add" style="margin-bottom: 10px;">
+                  <input type="hidden" name="produto_id" value="<%= product.id %>">
+                  <input type="hidden" name="produto_nome" value="<%= product.nome %>">
+                  <input type="hidden" name="produto_preco" value="<%= product.preco %>">
+                  <input type="hidden" name="produto_image" value="<%= product.image %>">
+                  <label>Quantidade:</label>
+                  <input type="number" name="quantidade" value="1" min="1" required style="width: 60px; margin: 5px;">
+                  <button type="submit"
+                    style="background: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 4px;">Adicionar
+                    ao Carrinho</button>
+                </form>
+
+                <!-- Fazer pedido direto -->
                 <form method="post" action="/pedidos">
                   <input type="hidden" name="produto_id" value="<%= product.id %>">
                   <input type="hidden" name="produto_nome" value="<%= product.nome %>">
                   <input type="hidden" name="produto_preco" value="<%= product.preco %>">
                   <label>Quantidade:</label>
-                  <input type="number" name="quantidade" value="1" min="1" required>
-                  <button type="submit">Fazer Pedido</button>
+                  <input type="number" name="quantidade" value="1" min="1" required style="width: 60px; margin: 5px;">
+                  <button type="submit"
+                    style="background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px;">Comprar
+                    Agora</button>
                 </form>
           </div>
           <% }) %>

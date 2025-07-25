@@ -45,9 +45,28 @@ class DatabaseClient {
     // Criar tabela de pedidos
     this.db.run(`CREATE TABLE IF NOT EXISTS pedidos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
       quantidade_itens INTEGER,
       lista_itens TEXT,
-      preco_total REAL
+      preco_total REAL,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    )`, (err) => {
+      if (err) {
+        console.error('Erro ao criar tabela pedidos:', err.message);
+      } else {
+        this.migratePedidosTable();
+      }
+    });
+
+    // Criar tabela do carrinho
+    this.db.run(`CREATE TABLE IF NOT EXISTS carrinho (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      produto_id INTEGER,
+      produto_nome TEXT,
+      produto_preco REAL,
+      produto_image TEXT,
+      quantidade INTEGER,
+      subtotal REAL
     )`);
   }
 
@@ -87,6 +106,29 @@ class DatabaseClient {
       setTimeout(() => {
         this.seedProducts();
       }, 100);
+    });
+  }
+
+  migratePedidosTable() {
+    // Verificar se a coluna user_id existe na tabela pedidos
+    this.db.all("PRAGMA table_info(pedidos)", (err, columns) => {
+      if (err) {
+        console.error('Erro ao verificar estrutura da tabela pedidos:', err.message);
+        return;
+      }
+
+      const columnNames = columns.map(col => col.name);
+
+      // Adicionar coluna user_id se não existir
+      if (!columnNames.includes('user_id')) {
+        this.db.run('ALTER TABLE pedidos ADD COLUMN user_id INTEGER', (err) => {
+          if (err) {
+            console.error('Erro ao adicionar coluna user_id:', err.message);
+          } else {
+            console.log('Coluna user_id adicionada com sucesso na tabela pedidos');
+          }
+        });
+      }
     });
   }
 

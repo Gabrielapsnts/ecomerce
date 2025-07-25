@@ -49,20 +49,26 @@
                     <div class="pedido-card">
                         <h3>Pedido #<%= pedido.id %>
                         </h3>
-                        <p><strong>Quantidade de itens:</strong>
-                            <%= pedido.quantidade_itens %>
-                        </p>
-                        <p><strong>Preço total:</strong> R$ <%= pedido.preco_total.toFixed(2) %>
-                        </p>
-                        <div>
-                            <strong>Itens:</strong>
-                            <% pedido.lista_itens.forEach(item=> { %>
-                                <div class="item">
-                                    <%= item.nome %> - Qtd: <%= item.quantidade %> - R$ <%= item.preco.toFixed(2) %>
+                        <% if (pedido.user_id) { %>
+                            <p><strong>Usuário ID:</strong>
+                                <%= pedido.user_id %>
+                            </p>
+                            <% } %>
+                                <p><strong>Quantidade de itens:</strong>
+                                    <%= pedido.quantidade_itens %>
+                                </p>
+                                <p><strong>Preço total:</strong> R$ <%= pedido.preco_total.toFixed(2) %>
+                                </p>
+                                <div>
+                                    <strong>Itens:</strong>
+                                    <% pedido.lista_itens.forEach(item=> { %>
+                                        <div class="item">
+                                            <%= item.nome %> - Qtd: <%= item.quantidade %> - R$ <%=
+                                                        item.preco.toFixed(2) %>
+                                        </div>
+                                        <% }) %>
                                 </div>
-                                <% }) %>
-                        </div>
-                        <a href="/pedidos/<%= pedido.id %>">Ver detalhes</a>
+                                <a href="/pedidos/<%= pedido.id %>">Ver detalhes</a>
                     </div>
                     <% }) %>
                         <% } %>

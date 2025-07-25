@@ -38,6 +38,26 @@ class Product {
             });
         });
     }
+
+    static findByCategory(category) {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM produtos WHERE category = ?`;
+            db.all(query, [category], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows.map(row => new Product(row.id, row.nome, row.preco, row.image, row.category)));
+            });
+        });
+    }
+
+    static getCategories() {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT DISTINCT category FROM produtos WHERE category IS NOT NULL ORDER BY category`;
+            db.all(query, [], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows.map(row => row.category));
+            });
+        });
+    }
 }
 
 export default Product;
