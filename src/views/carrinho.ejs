@@ -1,39 +1,108 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-BR">
 <head>
-    <title>Carrinho de Compras</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras - E-commerce</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
         .nav {
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
         }
 
         .nav a {
-            margin-right: 15px;
             text-decoration: none;
-            color: #007bff;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title h1 {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
         .carrinho-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .carrinho-item {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .carrinho-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
 
         .item-image {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
-            border-radius: 4px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .item-info {
@@ -41,156 +110,235 @@
         }
 
         .item-nome {
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
         }
 
         .item-preco {
-            color: #666;
+            color: #28a745;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
         .item-quantidade {
-            font-size: 14px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
         }
 
         .item-subtotal {
-            font-weight: bold;
-            color: #28a745;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
         }
 
         .item-actions {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 0.75rem;
         }
 
         .btn-remove {
-            background: #dc3545;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
         }
 
         .carrinho-total {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
             text-align: center;
-            margin-top: 20px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .total-valor {
-            font-size: 24px;
+            font-size: 2rem;
             font-weight: bold;
-            color: #28a745;
+            margin-bottom: 1rem;
         }
 
         .carrinho-actions {
             text-align: center;
-            margin-top: 20px;
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             cursor: pointer;
-            margin: 0 10px;
             text-decoration: none;
             display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
         .btn-primary {
-            background: #007bff;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
 
         .btn-danger {
-            background: #dc3545;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
         }
 
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+
         .btn-secondary {
-            background: #6c757d;
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
             color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
         }
 
         .carrinho-vazio {
             text-align: center;
-            padding: 40px;
+            padding: 3rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin: 2rem 0;
+        }
+
+        .carrinho-vazio h2 {
             color: #666;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .carrinho-vazio p {
+            color: #999;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .carrinho-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .item-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .carrinho-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="nav">
-        <a href="/products">Produtos</a>
-        <a href="/pedidos">Pedidos</a>
-        <a href="/carrinho">Carrinho</a>
+    <div class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="logo">🛍️ E-commerce</div>
+                <div class="nav-links">
+                    <a href="/products">Produtos</a>
+                    <a href="/pedidos">Pedidos</a>
+                    <a href="/carrinho">Carrinho</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="carrinho-container">
-        <h1>Carrinho de Compras</h1>
+    <div class="container">
+        <div class="page-title">
+            <h1>🛒 Meu Carrinho</h1>
+        </div>
 
-        <% if (itens.length===0) { %>
-            <div class="carrinho-vazio">
-                <h3>Seu carrinho está vazio</h3>
-                <p>Adicione alguns produtos para começar suas compras!</p>
-                <a href="/products" class="btn btn-primary">Continuar Comprando</a>
-            </div>
+        <div class="carrinho-container">
+            <% if (itens.length === 0) { %>
+                <div class="carrinho-vazio">
+                    <h2>🛒 Seu carrinho está vazio</h2>
+                    <p>Adicione alguns produtos para começar suas compras!</p>
+                    <a href="/products" class="btn btn-primary">🛍️ Ver Produtos</a>
+                </div>
             <% } else { %>
-                <% itens.forEach(item=> { %>
+                <% itens.forEach(item => { %>
                     <div class="carrinho-item">
                         <% if (item.produto_image) { %>
                             <img src="<%= item.produto_image %>" alt="<%= item.produto_nome %>" class="item-image">
-                            <% } %>
+                        <% } %>
 
-                                <div class="item-info">
-                                    <div class="item-nome">
-                                        <%= item.produto_nome %>
-                                    </div>
-                                    <div class="item-preco">R$ <%= item.produto_preco.toFixed(2) %>
-                                    </div>
-                                    <div class="item-quantidade">Quantidade: <%= item.quantidade %>
-                                    </div>
-                                </div>
-
-                                <div class="item-subtotal">
-                                    R$ <%= item.subtotal.toFixed(2) %>
-                                </div>
-
-                                <div class="item-actions">
-                                    <form method="post" action="/carrinho/remove/<%= item.id %>">
-                                        <button type="submit" class="btn-remove"
-                                            onclick="return confirm('Remover este item do carrinho?')">
-                                            Remover
-                                        </button>
-                                    </form>
-                                </div>
-                    </div>
-                    <% }) %>
-
-                        <div class="carrinho-total">
-                            <h3>Total do Carrinho</h3>
-                            <div class="total-valor">R$ <%= total.toFixed(2) %>
-                            </div>
+                        <div class="item-info">
+                            <div class="item-nome"><%= item.produto_nome %></div>
+                            <div class="item-preco">R$ <%= item.produto_preco.toFixed(2) %></div>
+                            <div class="item-quantidade">Quantidade: <%= item.quantidade %></div>
                         </div>
 
-                        <div class="carrinho-actions">
-                            <a href="/products" class="btn btn-secondary">Continuar Comprando</a>
-                            <form method="post" action="/carrinho/clear" style="display: inline;">
-                                <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Limpar todo o carrinho?')">
-                                    Limpar Carrinho
+                        <div class="item-actions">
+                            <div class="item-subtotal">R$ <%= item.subtotal.toFixed(2) %></div>
+                            <form method="post" action="/carrinho/remove/<%= item.id %>">
+                                <button type="submit" class="btn-remove" onclick="return confirm('Remover este item do carrinho?')">
+                                    🗑️ Remover
                                 </button>
                             </form>
-                            <button class="btn btn-primary" disabled>Finalizar Compra (Em breve)</button>
                         </div>
-                        <% } %>
+                    </div>
+                <% }) %>
+
+                <div class="carrinho-total">
+                    <h2>Total do Carrinho</h2>
+                    <div class="total-valor">R$ <%= total.toFixed(2) %></div>
+                </div>
+
+                <div class="carrinho-actions">
+                    <a href="/products" class="btn btn-secondary">🔙 Continuar Comprando</a>
+                    <form method="post" action="/carrinho/clear" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Limpar todo o carrinho?')">
+                            🗑️ Limpar Carrinho
+                        </button>
+                    </form>
+                    <button class="btn btn-primary" disabled>✅ Finalizar Compra (Em breve)</button>
+                </div>
+            <% } %>
+        </div>
     </div>
 </body>
-
 </html>

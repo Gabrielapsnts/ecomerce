@@ -1,78 +1,271 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-BR">
 <head>
-    <title>Pedidos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pedidos - E-commerce</title>
     <style>
-        .pedido-list {
-            margin-top: 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .pedido-card {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 15px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
 
         .nav {
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
         }
 
         .nav a {
-            margin-right: 15px;
             text-decoration: none;
-            color: #007bff;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title h1 {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .pedido-list {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pedido-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .pedido-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .pedido-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .pedido-id {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .pedido-data {
+            color: #666;
+            font-size: 0.9rem;
         }
 
         .item {
-            margin: 5px 0;
-            padding: 5px;
-            background: #f8f9fa;
+            margin: 0.75rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .item-nome {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        .pedidos-vazio {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin: 2rem 0;
+        }
+
+        .pedidos-vazio h2 {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .pedidos-vazio p {
+            color: #999;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .pedido-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .item-details {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="nav">
-        <a href="/products">Produtos</a>
-        <a href="/pedidos">Pedidos</a>
+    <div class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="logo">🛍️ E-commerce</div>
+                <div class="nav-links">
+                    <a href="/products">Produtos</a>
+                    <a href="/pedidos">Pedidos</a>
+                    <a href="/carrinho">Carrinho</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <h1>Pedidos</h1>
+    <div class="container">
+        <div class="page-title">
+            <h1>📦 Meus Pedidos</h1>
+        </div>
 
-    <div class="pedido-list">
-        <% if (pedidos.length===0) { %>
-            <p>Nenhum pedido encontrado.</p>
+        <div class="pedido-list">
+            <% if (pedidos.length === 0) { %>
+                <div class="pedidos-vazio">
+                    <h2>📦 Nenhum pedido encontrado</h2>
+                    <p>Você ainda não fez nenhum pedido. Que tal começar suas compras?</p>
+                    <a href="/products" class="btn">🛍️ Ver Produtos</a>
+                </div>
             <% } else { %>
-                <% pedidos.forEach(pedido=> { %>
+                <% pedidos.forEach(pedido => { %>
                     <div class="pedido-card">
-                        <h3>Pedido #<%= pedido.id %>
-                        </h3>
-                        <% if (pedido.user_id) { %>
-                            <p><strong>Usuário ID:</strong>
-                                <%= pedido.user_id %>
-                            </p>
-                            <% } %>
-                                <p><strong>Quantidade de itens:</strong>
-                                    <%= pedido.quantidade_itens %>
-                                </p>
-                                <p><strong>Preço total:</strong> R$ <%= pedido.preco_total.toFixed(2) %>
-                                </p>
-                                <div>
-                                    <strong>Itens:</strong>
-                                    <% pedido.lista_itens.forEach(item=> { %>
-                                        <div class="item">
-                                            <%= item.nome %> - Qtd: <%= item.quantidade %> - R$ <%=
-                                                        item.preco.toFixed(2) %>
-                                        </div>
-                                        <% }) %>
+                        <div class="pedido-header">
+                            <div class="pedido-id">🛒 Pedido #<%= pedido.id %></div>
+                            <div class="pedido-data">
+                                <% if (pedido.user_id) { %>
+                                    👤 Usuário: <%= pedido.user_id %>
+                                <% } %>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <strong>📊 Resumo:</strong> <%= pedido.quantidade_itens %> itens • Total: <span style="color: #28a745; font-weight: 600;">R$ <%= pedido.preco_total.toFixed(2) %></span>
+                        </div>
+                        
+                        <div>
+                            <strong style="color: #667eea;">🛍️ Itens do pedido:</strong>
+                            <% pedido.lista_itens.forEach(item => { %>
+                                <div class="item">
+                                    <div class="item-nome"><%= item.nome %></div>
+                                    <div class="item-details">
+                                        <span>Quantidade: <%= item.quantidade %></span>
+                                        <span class="item-price">R$ <%= item.preco.toFixed(2) %></span>
+                                    </div>
                                 </div>
-                                <a href="/pedidos/<%= pedido.id %>">Ver detalhes</a>
+                            <% }) %>
+                        </div>
+                        
+                        <div style="text-align: right; margin-top: 1rem;">
+                            <a href="/pedidos/<%= pedido.id %>" class="btn">👁️ Ver Detalhes</a>
+                        </div>
                     </div>
-                    <% }) %>
-                        <% } %>
+                <% }) %>
+            <% } %>
+        </div>
     </div>
 </body>
-
 </html>

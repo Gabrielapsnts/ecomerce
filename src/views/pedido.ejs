@@ -1,78 +1,301 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-BR">
 <head>
-    <title>Pedido #<%= pedido.id %>
-    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido #<%= pedido.id %> - E-commerce</title>
     <style>
-        .pedido-details {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
 
         .nav {
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
         }
 
         .nav a {
-            margin-right: 15px;
             text-decoration: none;
-            color: #007bff;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title h1 {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .pedido-details {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .pedido-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .pedido-id {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .pedido-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .items-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .item {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin: 1rem 0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #28a745;
+            transition: transform 0.3s ease;
+        }
+
+        .item:hover {
+            transform: translateX(5px);
+        }
+
+        .item-nome {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #28a745;
+            font-size: 1.1rem;
+        }
+
+        .total-section {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 2rem;
         }
 
         .total {
-            font-size: 18px;
+            font-size: 2rem;
             font-weight: bold;
-            margin-top: 15px;
-            color: #28a745;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .pedido-info {
+                grid-template-columns: 1fr;
+            }
+
+            .item-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="nav">
-        <a href="/products">Produtos</a>
-        <a href="/pedidos">Pedidos</a>
+    <div class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="logo">🛍️ E-commerce</div>
+                <div class="nav-links">
+                    <a href="/products">Produtos</a>
+                    <a href="/pedidos">Pedidos</a>
+                    <a href="/carrinho">Carrinho</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <h1>Detalhes do Pedido #<%= pedido.id %>
-    </h1>
+    <div class="container">
+        <div class="page-title">
+            <h1>📦 Detalhes do Pedido</h1>
+        </div>
 
-    <div class="pedido-details">
-        <% if (pedido.user_id) { %>
-            <p><strong>Usuário ID:</strong>
-                <%= pedido.user_id %>
-            </p>
-            <% } %>
-                <p><strong>Quantidade de itens:</strong>
-                    <%= pedido.quantidade_itens %>
-                </p>
+        <div class="pedido-details">
+            <div class="pedido-header">
+                <div class="pedido-id">🛒 Pedido #<%= pedido.id %></div>
+                <div>Informações detalhadas do seu pedido</div>
+            </div>
 
-                <h3>Itens do pedido:</h3>
-                <% pedido.lista_itens.forEach(item=> { %>
-                    <div class="item">
-                        <strong>
-                            <%= item.nome %>
-                        </strong><br>
-                        Quantidade: <%= item.quantidade %><br>
-                            Preço unitário: R$ <%= item.preco.toFixed(2) %><br>
-                                Subtotal: R$ <%= (item.quantidade * item.preco).toFixed(2) %>
+            <div class="pedido-info">
+                <% if (pedido.user_id) { %>
+                    <div class="info-card">
+                        <div class="info-label">👤 Usuário</div>
+                        <div class="info-value">ID: <%= pedido.user_id %></div>
                     </div>
-                    <% }) %>
+                <% } %>
+                
+                <div class="info-card">
+                    <div class="info-label">📊 Quantidade de Itens</div>
+                    <div class="info-value"><%= pedido.quantidade_itens %> item<%= pedido.quantidade_itens > 1 ? 's' : '' %></div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-label">💰 Valor Total</div>
+                    <div class="info-value" style="color: #28a745; font-weight: bold;">R$ <%= pedido.preco_total.toFixed(2) %></div>
+                </div>
+            </div>
 
-                        <div class="total">
-                            Total do pedido: R$ <%= pedido.preco_total.toFixed(2) %>
+            <div class="items-section">
+                <h3 class="section-title">🛍️ Itens do Pedido</h3>
+                <% pedido.lista_itens.forEach(item => { %>
+                    <div class="item">
+                        <div class="item-nome"><%= item.nome %></div>
+                        <div class="item-details">
+                            <div>
+                                <span>📦 Quantidade: <%= item.quantidade %></span><br>
+                                <span>💵 Preço unitário: R$ <%= item.preco.toFixed(2) %></span>
+                            </div>
+                            <div class="item-price">
+                                Subtotal: R$ <%= (item.quantidade * item.preco).toFixed(2) %>
+                            </div>
                         </div>
+                    </div>
+                <% }) %>
+            </div>
+
+            <div class="total-section">
+                <h3>💰 Total do Pedido</h3>
+                <div class="total">R$ <%= pedido.preco_total.toFixed(2) %></div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/pedidos" class="back-btn">🔙 Voltar aos Pedidos</a>
+            </div>
+        </div>
     </div>
 </body>
-
 </html>
